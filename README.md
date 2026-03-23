@@ -4,7 +4,7 @@ Soroban smart contracts for the TalentTrust decentralized freelancer escrow prot
 
 ## What's in this repo
 
-- **Escrow contract** (`contracts/escrow`): Holds funds in escrow, supports milestone-based payments and reputation credential issuance.
+- **Escrow contract** (`contracts/escrow`): Holds funds in escrow, supports milestone-based payments, and reputation credential issuance. *Note: Comprehensive Negative Path Testing is documented in [`docs/escrow/README.md`](docs/escrow/README.md).*
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ cd talenttrust-contracts
 # Build
 cargo build
 
-# Run tests
+# Run tests (includes 95%+ coverage negative path testing for escrow)
 cargo test
 
 # Check formatting
