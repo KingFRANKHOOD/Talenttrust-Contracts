@@ -2,7 +2,7 @@
 
 mod types;
 
-use soroban_sdk::{contract, contractimpl, Address, Env, Symbol, Vec, String, panic_with_error};
+use soroban_sdk::{contract, contractimpl, panic_with_error, Address, Env, String, Symbol, Vec};
 use types::*;
 
 #[contract]
@@ -32,8 +32,12 @@ impl Escrow {
         }
 
         env.storage().instance().set(&DataKey::Client, &client);
-        env.storage().instance().set(&DataKey::Freelancer, &freelancer);
-        env.storage().instance().set(&DataKey::Milestones, &milestones);
+        env.storage()
+            .instance()
+            .set(&DataKey::Freelancer, &freelancer);
+        env.storage()
+            .instance()
+            .set(&DataKey::Milestones, &milestones);
         env.storage().instance().set(&DataKey::Initialized, &true);
     }
 
@@ -42,7 +46,7 @@ impl Escrow {
     pub fn deposit_funds(env: Env, _amount: i128) {
         let client: Address = env.storage().instance().get(&DataKey::Client).unwrap();
         client.require_auth();
-        
+
         // Deposit logic (e.g., token transfer) would go here.
         // For now, we assume funds are handled externally or by the contract balance.
     }
@@ -50,7 +54,11 @@ impl Escrow {
     /// Release a milestone payment to the freelancer after verification.
     /// This implementation includes idempotent protection and metadata storage.
     pub fn release_milestone(env: Env, milestone_id: u32, work_evidence: String) {
-        let client: Address = env.storage().instance().get(&DataKey::Client).expect("not initialized");
+        let client: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::Client)
+            .expect("not initialized");
         client.require_auth();
 
         let mut milestones = Self::get_milestones(env.clone());
@@ -64,7 +72,9 @@ impl Escrow {
         milestone.work_evidence = Some(work_evidence);
 
         milestones.set(milestone_id, milestone);
-        env.storage().instance().set(&DataKey::Milestones, &milestones);
+        env.storage()
+            .instance()
+            .set(&DataKey::Milestones, &milestones);
     }
 
     // --- Internal Logic ---
@@ -93,7 +103,10 @@ impl Escrow {
 
     /// Getter for milestones (useful for verification and UI)
     pub fn get_milestones(env: Env) -> Vec<Milestone> {
-        env.storage().instance().get(&DataKey::Milestones).unwrap_or(Vec::new(&env))
+        env.storage()
+            .instance()
+            .get(&DataKey::Milestones)
+            .unwrap_or(Vec::new(&env))
     }
 }
 

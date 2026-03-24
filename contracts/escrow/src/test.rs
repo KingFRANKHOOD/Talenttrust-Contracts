@@ -23,7 +23,7 @@ fn test_create_contract() {
     let milestones = vec![&env, 200_0000000_i128, 400_0000000_i128];
 
     client.create_contract(&client_addr, &freelancer_addr, &milestones);
-    
+
     let stored_milestones = client.get_milestones();
     assert_eq!(stored_milestones.len(), 2);
     assert_eq!(stored_milestones.get(0).unwrap().amount, 200_0000000_i128);
@@ -56,10 +56,10 @@ fn test_release_milestone_and_idempotency() {
     client.create_contract(&client_addr, &freelancer_addr, &milestones);
 
     let evidence = String::from_str(&env, "ipfs://work-evidence-hash");
-    
+
     // First release
     client.release_milestone(&0, &evidence);
-    
+
     let stored_milestones = client.get_milestones();
     let milestone = stored_milestones.get(0).unwrap();
     assert!(milestone.released);
