@@ -318,10 +318,7 @@ impl Escrow {
         );
 
         // Constraint 5: rating must be in [1, 5].
-        assert!(
-            rating >= 1 && rating <= 5,
-            "rating must be between 1 and 5"
-        );
+        assert!(rating >= 1 && rating <= 5, "rating must be between 1 and 5");
 
         // Set the issued flag before emitting the event (checks-effects-interactions).
         env.storage()
